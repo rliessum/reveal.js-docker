@@ -13,7 +13,6 @@ RUN sed -i '/^.*grunt-contrib-qunit.*$/d ; /^.*express.*$/d' package.json
 RUN npm install
 
 COPY dockerfiles/scripts/src/* /dist/scripts/
-COPY dockerfiles/prod/entrypoint.sh /dist/scripts
 
 # Install envsubst to be used for index.html templating in final image
 RUN apk add gettext # For envsubst -> if libaries are missing, find out with: ldd $(which envsubst)
@@ -29,4 +28,4 @@ RUN ln -s /reveal /dist/usr/share/nginx/html
 FROM nginx AS prod
 COPY --from=aggregator --chown=nginx /dist /
 EXPOSE 8080
-ENTRYPOINT [ "/scripts/entrypoint.sh" ]
+ENTRYPOINT [ "/scripts/entrypoint.sh", "nginx", "-g", "daemon off;"]

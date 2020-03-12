@@ -14,11 +14,10 @@ RUN npm install
 RUN node_modules/grunt/bin/grunt --skipTests
 
 COPY dockerfiles/scripts/src/* /dist/scripts/
-COPY dockerfiles/dev/entrypoint.sh /dist/scripts
 
 FROM node
 RUN apk add gettext # For envsubst
 COPY --from=aggregator /dist /
 EXPOSE 8000
 EXPOSE 35729
-ENTRYPOINT [ "/scripts/entrypoint.sh" ]
+ENTRYPOINT [ "/scripts/entrypoint.sh", "npm", "run", "start", "--prefix", "/reveal/"]

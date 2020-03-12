@@ -8,5 +8,5 @@ export OUTPUT_INDEX_HTML="${WEB_FOLDER}/index.html"
 echo "Templating index.html"
 /scripts/templateIndexHtml
 
-echo "Starting reveal.js development mode"
-exec npm run start --prefix "${WEB_FOLDER}"
+echo "Starting server"
+exec "$@"
