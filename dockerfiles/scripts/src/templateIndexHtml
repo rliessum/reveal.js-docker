@@ -8,6 +8,7 @@ RESOURCE_FOLDER=${RESOURCE_FOLDER:-'.'}
 
 export TITLE=${TITLE:-'Continuous Delivery Slides'}
 export THEME_CSS=${THEME_CSS:-'css/cloudogu.css'}
+export ADDITIONAL_DEPENDENCIES=${ADDITIONAL_DEPENDENCIES:-''}
 
 if [ -f "${RESOURCE_FOLDER}/footer.html" ]; then
     export FOOTER_HTML="<div class=\"footer text-smaller state-background\">$(cat "${RESOURCE_FOLDER}/footer.html")

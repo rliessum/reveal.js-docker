@@ -19,24 +19,32 @@ Based on [cloudogu/continuous-delivery-slides](https://github.com/cloudogu/conti
   * `THEME_CSS`
      * `css/cloudogu.css`
      * `css/cloudogu-black.css`
+  * `ADDITIONAL_DEPENDENCIES` - additional reveal.js dependencies, e.g. plugins  
+     e.g. `-e ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js', async: true }" `  
+     Note that these files have to be mounted to the respective folders in (dev or prod images)
 * Start Container
 
 ```bash
 # Development mode (with live reloading)
+# Add more folders to web folder, e.g. like so:
+# -v  $(pwd)/images:/cd-slides/images
 docker run --rm \
     -v $(pwd)/docs/slides:/docs/slides \
     -v $(pwd)/dockerfiles/scripts/test:/resources \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
     -p 8000:8000 -p 35729:35729 \
-    cloudogu/reveal.js-docker:dev
+    cloudogu/reveal.js:dev
+
 
 # Production Mode (smaller, more secure, just a static HTML site served by NGINX)
+# Add more folders to  web folder, e.g. like so:
+# -v  $(pwd)/images:/usr/share/nginx/html/images
 docker run --rm \
     -v $(pwd)/docs/slides:/docs/slides \
     -v $(pwd)/dockerfiles/scripts/test:/resources \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
     -p 8080:8080 \
-    cloudogu/reveal.js-docker
+    cloudogu/reveal.js
 ```
 
 ## Index.html Template and params:
@@ -61,7 +69,11 @@ An overview where the env vars and  HTML Fragment are injected:
     
     <!-- Optional: <script>additional.js</script>-  -->
     <script>
-    // Initializes reveal.js
+    // ... Initializes reveal.js
+        dependencies: [
+                         // ...,
+                         ${ADDITIONAL_DEPENDENCIES}
+                       ]
     </script>
     
     <!-- optional: body-end.html -->
