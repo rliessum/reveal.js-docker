@@ -18,6 +18,8 @@ docker run --rm -p 8080:8080 cloudogu/reveal.js
 ## Ship your own slides
 
 * Mount md slides to `/docs/slides`
+* Optionally mount folders to web folder, e.g. like so:  
+ `-v  $(pwd)/images:/reveal/images`
 * Mount folder containing HTML Fragment-files to `/resources`
   * `slides.html` -> Pick the slides from `docs/slides` ([example](dockerfiles/scripts/test/slides.html))
   * `additional.js` - Script executed before initializing reveal.js
@@ -30,25 +32,21 @@ docker run --rm -p 8080:8080 cloudogu/reveal.js
      * `css/cloudogu-black.css`
   * `ADDITIONAL_DEPENDENCIES` - additional reveal.js dependencies, e.g. plugins  
      e.g. `-e ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js', async: true }" `  
-     Note that these files have to be mounted to the respective folders in (dev or prod images)
+     Note that these files have to be mounted to the /reveal folder, e.g. here `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
 * Start Container
 
 ```bash
 # Development mode (with live reloading)
-# Add more folders to web folder, e.g. like so:
-# -v  $(pwd)/images:/cd-slides/images
 docker run --rm \
-    -v $(pwd)/docs/slides:/docs/slides \
+    -v $(pwd)/docs/slides:/reveal/docs/slides \
     -v $(pwd)/dockerfiles/scripts/test:/resources \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
     -p 8000:8000 -p 35729:35729 \
     cloudogu/reveal.js:dev
 
 # Production Mode (smaller, more secure, just a static HTML site served by NGINX)
-# Add more folders to  web folder, e.g. like so:
-# -v  $(pwd)/images:/usr/share/nginx/html/images
 docker run --rm \
-    -v $(pwd)/docs/slides:/docs/slides \
+    -v $(pwd)/docs/slides:/reveal/docs/slides \
     -v $(pwd)/dockerfiles/scripts/test:/resources \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
     -p 8080:8080 \
@@ -99,7 +97,6 @@ docker build -t prod -f dockerfiles/prod/Dockerfile .
 ```
 
 Run tests locally
-
 ```bash
 cd dockerfiles/scripts/test
 ../src/templateIndexHtml
