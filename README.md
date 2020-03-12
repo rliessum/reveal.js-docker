@@ -7,13 +7,22 @@ Based on [cloudogu/continuous-delivery-slides](https://github.com/cloudogu/conti
 
 # How to use
 
+## Simplest start 
+
+Ships a default presentation:
+
+``bash
+docker run --rm -p 8080:8080 cloudogu/reveal.js
+```
+
+## Ship your own slides
+
 * Mount md slides to `/docs/slides`
 * Mount folder containing HTML Fragment-files to `/resources`
-  * Mandatory: `slides.html` -> Pick the slides from `docs/slides`
-  * Optional:
-    * `additional.js` - Script executed before initializing reveal.js
-    * `body-end.html` - `html` injected at the end of `body
-    * `footer.html` - rendered at the footer (lower left corner) for now only works with cloudogu Themes
+  * `slides.html` -> Pick the slides from `docs/slides` ([example](dockerfiles/scripts/test/slides.html))
+  * `additional.js` - Script executed before initializing reveal.js
+  * `body-end.html` - `html` injected at the end of `body
+  * `footer.html` - rendered at the footer (lower left corner) for now only works with cloudogu Themes
 * Optional Env vars: 
   * `TITLE`
   * `THEME_CSS`
@@ -34,7 +43,6 @@ docker run --rm \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
     -p 8000:8000 -p 35729:35729 \
     cloudogu/reveal.js:dev
-
 
 # Production Mode (smaller, more secure, just a static HTML site served by NGINX)
 # Add more folders to  web folder, e.g. like so:

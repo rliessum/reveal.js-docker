@@ -10,6 +10,9 @@ export TITLE=${TITLE:-'Continuous Delivery Slides'}
 export THEME_CSS=${THEME_CSS:-'css/cloudogu.css'}
 export ADDITIONAL_DEPENDENCIES=${ADDITIONAL_DEPENDENCIES:-''}
 
+BASEDIR=$(dirname $0)     
+ABSOLUTE_BASEDIR="$( cd $BASEDIR && pwd )"
+
 if [ -f "${RESOURCE_FOLDER}/footer.html" ]; then
     export FOOTER_HTML="<div class=\"footer text-smaller state-background\">$(cat "${RESOURCE_FOLDER}/footer.html")
 </div>"
@@ -22,8 +25,9 @@ fi
 if [ -f "${RESOURCE_FOLDER}/slides.html" ]; then
     export SLIDES_HTML="$(cat "${RESOURCE_FOLDER}/slides.html")"
 else
-    echo "WARNING: No slides.html found in ${RESOURCE_FOLDER}. Presentation will not have any content."
     # TODO parse all .md files from docs/slides 
+    echo "WARNING: No slides.html found in ${RESOURCE_FOLDER}. Using default presentation."
+    export SLIDES_HTML="$(cat "${ABSOLUTE_BASEDIR}/default-slides.html")"
 fi
 
 if [ -f "${RESOURCE_FOLDER}/additional.js" ]; then
