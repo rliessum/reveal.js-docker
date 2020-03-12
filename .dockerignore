@@ -2,9 +2,7 @@
 **
 # Whitelist
 !css/**
-!dockerfiles/dev/entrypoint.sh
-!dockerfiles/prod/entrypoint.sh
-!dockerfiles/scripts
+!scripts
 !docs/**
 !js/**
 !lib/**

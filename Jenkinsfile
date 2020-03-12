@@ -26,8 +26,8 @@ node('docker') {
         String imageName = "cloudogu/reveal.js:${createVersion(git)}"
 
         stage('Build Images') {
-            devImage = docker.build "${imageName}-dev", '-f dockerfiles/dev/Dockerfile .'
-            prodImage = docker.build imageName, '-f dockerfiles/prod/Dockerfile .'
+            devImage = docker.build "${imageName}-dev", '--build-arg ENV=dev .'
+            prodImage = docker.build imageName, '.'
         }
 
         stage('Build Images') {

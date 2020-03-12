@@ -43,6 +43,7 @@ docker run --rm \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
     -p 8000:8000 -p 35729:35729 \
     cloudogu/reveal.js:dev
+```
 
 # Production Mode (smaller, more secure, just a static HTML site served by NGINX)
 docker run --rm \
@@ -92,12 +93,20 @@ An overview where the env vars and  HTML Fragment are injected:
 Build Docker Images, from repo root
 
 ```bash
-docker build -t dev -f dockerfiles/dev/Dockerfile .
-docker build -t prod -f dockerfiles/prod/Dockerfile .
+docker build -t prod .
+docker build -t dev --build-arg ENV=dev .
 ```
 
+Note: If only one build is required, buildkit would be more efficient. However, prod is failing with buildkit.
+Try it with ` export DOCKER_BUILDKIT=1
+See https://github.com/moby/moby/issues/735
+
+## Tests
+
 Run tests locally
+
 ```bash
+# For now manually
 cd dockerfiles/scripts/test
 ../src/templateIndexHtml
 ```
