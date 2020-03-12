@@ -1,2 +1,17 @@
-.git
-.idea
+# Ignore all
+**
+# Whitelist
+!css/**
+!dockerfiles/dev/entrypoint.sh
+!dockerfiles/prod/entrypoint.sh
+!dockerfiles/scripts
+!docs/**
+!js/**
+!lib/**
+!plugin/**
+!favicon.ico
+!gruntfile.js
+!index.html
+!package.json
+!package-lock.json
+
