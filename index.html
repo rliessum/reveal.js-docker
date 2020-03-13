@@ -38,7 +38,7 @@
 ${ADDITIONAL_SCRIPT}
 
 <script>
-	const showNotesForPrinting = true;
+	const showNotesForPrinting = ${SHOW_NOTES_FOR_PRINTING};
 
 	evaluateExcludeLocation();
 	const showNotes = showNotesForPrinting && window.location.search.startsWith('?print-pdf') ? "separate-page" : undefined;
@@ -71,7 +71,8 @@ ${ADDITIONAL_SCRIPT}
 			// Standardizes emoji images
 			{ src: 'plugin/reveal-twemoji/reveal-twemoji.js' },
 			${ADDITIONAL_DEPENDENCIES}
-		]
+		],
+		${ADDITIONAL_REVEAL_OPTIONS}
 	});
 
 	setPresenterMode(false);

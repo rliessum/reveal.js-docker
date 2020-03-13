@@ -21,7 +21,7 @@ docker run --rm -p 8080:8080 cloudogu/reveal.js
 * Optionally mount folders to web folder, e.g. like so:  
  `-v  $(pwd)/images:/reveal/images`
 * Mount folder containing HTML Fragment-files to `/resources`
-  * `slides.html` -> Pick the slides from `docs/slides` ([example](dockerfiles/scripts/test/slides.html))
+  * `slides.html` -> Pick the slides from `docs/slides` ([example](scripts/test/slides.html))
   * `additional.js` - Script executed before initializing reveal.js
   * `body-end.html` - `html` injected at the end of `body
   * `footer.html` - rendered at the footer (lower left corner) for now only works with cloudogu Themes
@@ -30,6 +30,8 @@ docker run --rm -p 8080:8080 cloudogu/reveal.js
   * `THEME_CSS`
      * `css/cloudogu.css`
      * `css/cloudogu-black.css`
+  * `SHOW_NOTES_FOR_PRINTING` - print speaker notes - defaults to `false`.
+  * `ADDITIONAL_REVEAL_OPTIONS` - additional reveal.js options, e.g. pdfSeparateFragments : false 
   * `ADDITIONAL_DEPENDENCIES` - additional reveal.js dependencies, e.g. plugins  
      e.g. `-e ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js', async: true }" `  
      Note that these files have to be mounted to the /reveal folder, e.g. here `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
@@ -39,7 +41,7 @@ docker run --rm -p 8080:8080 cloudogu/reveal.js
 # Development mode (with live reloading)
 docker run --rm \
     -v $(pwd)/docs/slides:/reveal/docs/slides \
-    -v $(pwd)/dockerfiles/scripts/test:/resources \
+    -v $(pwd)/scripts/test:/resources \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
     -p 8000:8000 -p 35729:35729 \
     cloudogu/reveal.js:dev
@@ -48,8 +50,10 @@ docker run --rm \
 # Production Mode (smaller, more secure, just a static HTML site served by NGINX)
 docker run --rm \
     -v $(pwd)/docs/slides:/reveal/docs/slides \
-    -v $(pwd)/dockerfiles/scripts/test:/resources \
+    -v $(pwd)/scripts/test:/resources \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
+    -e ADDITIONAL_REVEAL_OPTIONS='pdfSeparateFragments: false' \
+    -e SHOW_NOTES_FOR_PRINTING='false' \
     -p 8080:8080 \
     cloudogu/reveal.js
 ```
@@ -73,7 +77,7 @@ An overview where the env vars and  HTML Fragment are injected:
         <!-- slides.html-->
         </div>
     </div>
-    
+    const showNotesForPrinting = ${SHOW_NOTES_FOR_PRINTING};
     <!-- Optional: <script>additional.js</script>-  -->
     <script>
     // ... Initializes reveal.js
@@ -81,6 +85,7 @@ An overview where the env vars and  HTML Fragment are injected:
                          // ...,
                          ${ADDITIONAL_DEPENDENCIES}
                        ]
+        ${ADDITIONAL_REVEAL_OPTIONS}
     </script>
     
     <!-- optional: body-end.html -->
@@ -107,6 +112,6 @@ Run tests locally
 
 ```bash
 # For now manually
-cd dockerfiles/scripts/test
+cd scripts/test
 ../src/templateIndexHtml
 ```
