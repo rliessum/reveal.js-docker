@@ -11,7 +11,7 @@ Based on [cloudogu/continuous-delivery-slides](https://github.com/cloudogu/conti
 
 Ships a default presentation:
 
-``bash
+```bash
 docker run --rm -p 8080:8080 cloudogu/reveal.js
 ```
 
@@ -45,7 +45,6 @@ docker run --rm \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
     -p 8000:8000 -p 35729:35729 \
     cloudogu/reveal.js:dev
-```
 
 # Production Mode (smaller, more secure, just a static HTML site served by NGINX)
 docker run --rm \

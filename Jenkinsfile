@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@1.35.1')
+@Library('github.com/cloudogu/ces-build-lib@1.35.2')
 import com.cloudogu.ces.cesbuildlib.*
 
 node('docker') {
@@ -19,6 +19,8 @@ node('docker') {
         stage('Checkout') {
             checkout scm
             git.clean('')
+            // Otherwise git.isTag() will not be reliable. Jenkins seems to do a sparse checkout only
+            sh "git fetch --tags"
         }
 
         def devImage
@@ -40,7 +42,7 @@ node('docker') {
                     devImage.push()
                     prodImage.push()
                 }
-                
+
                 if (env.BRANCH_NAME == "master") {
                     devImage.push('dev')
                     prodImage.push('latest')
