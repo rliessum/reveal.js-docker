@@ -31,7 +31,7 @@ docker run --rm -p 8080:8080 cloudogu/reveal.js
      * `css/cloudogu.css`
      * `css/cloudogu-black.css`
   * `SHOW_NOTES_FOR_PRINTING` - print speaker notes - defaults to `false`.
-  * `ADDITIONAL_REVEAL_OPTIONS` - additional reveal.js options, e.g. pdfSeparateFragments : false 
+  * `ADDITIONAL_REVEAL_OPTIONS` - [additional reveal.js options](https://github.com/hakimel/reveal.js/#configuration)
   * `ADDITIONAL_DEPENDENCIES` - additional reveal.js dependencies, e.g. plugins  
      e.g. `-e ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js', async: true }" `  
      Note that these files have to be mounted to the /reveal folder, e.g. here `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
@@ -51,8 +51,6 @@ docker run --rm \
     -v $(pwd)/docs/slides:/reveal/docs/slides \
     -v $(pwd)/scripts/test:/resources \
     -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
-    -e ADDITIONAL_REVEAL_OPTIONS='pdfSeparateFragments: false' \
-    -e SHOW_NOTES_FOR_PRINTING='false' \
     -p 8080:8080 \
     cloudogu/reveal.js
 ```
