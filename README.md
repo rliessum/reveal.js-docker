@@ -1,9 +1,34 @@
 reveal.js-docker
 ===
 
+[![Build Status](https://oss.cloudogu.com/jenkins/buildStatus/icon?job=cloudogu-github%2Freveal.js-docker%2Fmaster)](https://oss.cloudogu.com/jenkins/job/cloudogu-github/job/reveal.js-docker/job/master/)
+[![](https://img.shields.io/microbadger/layers/cloudogu/reveal.js)](https://hub.docker.com/r/cloudogu/reveal.js)
+[![](https://img.shields.io/docker/image-size/cloudogu/reveal.js)](https://hub.docker.com/r/cloudogu/reveal.js)
+
 Docker images providing easier to use, opinionated reveal.js web apps - web-based slides/presentations.
 
-Based on [cloudogu/continuous-delivery-slides](https://github.com/cloudogu/continuous-delivery-slides)
+Evolution of [cloudogu/reveal.js-docker](https://github.com/cloudogu/reveal.js-docker).
+Allows for 
+* less cluttered Repos (more slides, less reveal.js)
+* faster startup / builds (don't have to build reveal.js over and over again)
+* easier updates (new version of docker image; no git merge necessary)
+
+# Table of contents
+<!-- Update with `doctoc --notitle README.md`. See https://github.com/thlorenz/doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [How to use](#how-to-use)
+  - [Simplest start](#simplest-start)
+  - [Ship your own slides](#ship-your-own-slides)
+  - [Index.html pseudo-template](#indexhtml-pseudo-template)
+  - [Examples](#examples)
+- [Development](#development)
+  - [Tests](#tests)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 # How to use
 
@@ -17,13 +42,15 @@ docker run --rm -p 8080:8080 cloudogu/reveal.js
 
 ## Ship your own slides
 
-* Mount md slides to `/docs/slides`
-* Optionally mount folders to web folder, e.g. like so:  
+See also [real-life examples](#examples) and [index.html pseudo-template](#indexhtml-pseudo-template)
+
+* Mount markdown slides to `/docs/slides`
+* Optionally mount additional folders to web server, e.g. like so:  
  `-v  $(pwd)/images:/reveal/images`
-* Mount folder containing HTML Fragment-files to `/resources`
+* Mount folder containing HTML fragment files ([examples](scripts/test/)) to `/resources`
   * `slides.html` -> Pick the slides from `docs/slides` ([example](scripts/test/slides.html))
-  * `additional.js` - Script executed before initializing reveal.js
-  * `body-end.html` - `html` injected at the end of `body
+  * `additional.js` - script executed before initializing reveal.js
+  * `body-end.html` - `html` injected at the end of HTML `<body>`
   * `footer.html` - rendered at the footer (lower left corner) for now only works with cloudogu Themes
 * Optional Env vars: 
   * `TITLE`
@@ -55,9 +82,9 @@ docker run --rm \
     cloudogu/reveal.js
 ```
 
-## Index.html Template and params:
+## Index.html pseudo-template
 
-An overview where the env vars and  HTML Fragment are injected:
+An overview where the env vars and HTML Fragment are injected:
 
 ```html
 <!doctype html>
@@ -90,6 +117,10 @@ An overview where the env vars and  HTML Fragment are injected:
 </html>
 ```
 
+## Examples
+
+* [cloudogu/k8s-security-3-things](https://github.com/cloudogu/k8s-security-3-things)
+
 # Development
 
 Build Docker Images, from repo root
@@ -100,8 +131,7 @@ docker build -t dev --build-arg ENV=dev .
 ```
 
 Note: If only one build is required, buildkit would be more efficient. However, prod is failing with buildkit.
-Try it with ` export DOCKER_BUILDKIT=1
-See https://github.com/moby/moby/issues/735
+Try it with `export DOCKER_BUILDKIT` See [this issue](https://github.com/moby/moby/issues/735=
 
 ## Tests
 
