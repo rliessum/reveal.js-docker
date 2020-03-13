@@ -41,8 +41,10 @@ RUN mkdir -p /dist/usr/share/nginx/ /dist/reveal/
 # Package only whats necessary for static website 
 RUN node_modules/grunt/bin/grunt package --skipTests
 RUN unzip reveal-js-presentation.zip -d /dist/reveal/
+RUN rm /dist/reveal/js/reveal.js # We only need the minimized version
 # Serve web content at same folder in dev and prod: /reveal. This does not work with buildkit.
 RUN ln -s /reveal /dist/usr/share/nginx/html
+
 
 FROM nginx AS prod
 COPY --from=prod-aggregator --chown=nginx /dist /
