@@ -2,7 +2,7 @@
 **
 # Whitelist
 !css/**
-!scripts
+!scripts/src
 !docs/**
 !js/**
 !lib/**
