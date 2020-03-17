@@ -62,6 +62,8 @@ See also [real-life examples](#examples) and [index.html pseudo-template](#index
   * `ADDITIONAL_DEPENDENCIES` - additional reveal.js dependencies, e.g. plugins  
      e.g. `-e ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js', async: true }" `  
      Note that these files have to be mounted to the /reveal folder, e.g. here `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
+  * `SKIP_TEMPLATING` ignores all of the above elements and just launches with the `index.html` present. Useful if you 
+     mount your own `index.html`.
 * Start Container
 
 ```bash
