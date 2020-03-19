@@ -14,6 +14,7 @@ Allows for
 * easier updates (new version of docker image; no git merge necessary)
 
 # Table of contents
+
 <!-- Update with `doctoc --notitle README.md`. See https://github.com/thlorenz/doctoc -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -137,7 +138,13 @@ Try it with `export DOCKER_BUILDKIT` See [this issue](https://github.com/moby/mo
 
 ## Tests
 
-Run tests locally
+## Docker Image
+
+Build (as described [here](#development)) and run container as described [here](#ship-your-own-slides).
+
+## Script templateIndexHtml
+
+Test script locally (manually for now 😬)
 
 ```bash
 # For now manually

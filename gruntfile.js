@@ -106,7 +106,8 @@ module.exports = grunt => {
 					port: port,
 					base: root,
 					livereload: true,
-					open: true,
+					// Don't try to open browser in docker container: Unhandled Promise Exception
+					open: false,
 					useAvailablePort: true
 				}
 			}
