@@ -7,7 +7,7 @@ reveal.js-docker
 
 Docker images providing easier to use, opinionated reveal.js web apps - web-based slides/presentations.
 
-Evolution of [cloudogu/reveal.js-docker](https://github.com/cloudogu/reveal.js-docker).
+Evolution of [cloudogu/continuous-delivery-slides](https://github.com/cloudogu/continuous-delivery-slides).
 Allows for 
 * less cluttered Repos (more slides, less reveal.js)
 * faster startup / builds (don't have to build reveal.js over and over again)
@@ -85,6 +85,48 @@ docker run --rm \
     cloudogu/reveal.js
 ```
 
+You can also build your own productive image:
+
+```Dockerfile
+FROM cloudogu/reveal.js:3.9.2-r5 as base
+
+FROM base as aggregator
+USER root
+RUN mkdir -p /dist/reveal
+COPY . /dist/reveal
+RUN mv /dist/reveal/resources/ /dist
+
+FROM base
+ENV TITLE='my Title' \
+    THEME_CSS='css/cloudogu-black.css'
+COPY --from=aggregator --chown=nginx /dist /
+```
+
+Or if you want to run the container with `--read-only` file system, you can do the index.html rendering at build time,
+so no files need to be written at runtime:
+
+
+```Dockerfile
+FROM cloudogu/reveal.js:3.9.2-r3 as base
+
+FROM base as aggregator
+ENV TITLE='myTitle' \
+    THEME_CSS='css/cloudogu-black.css'
+USER root
+COPY . /reveal
+RUN mv /reveal/resources/ /
+RUN /scripts/templateIndexHtml
+
+FROM base
+ENV SKIP_TEMPLATING='true'
+COPY --from=aggregator --chown=nginx /reveal /reveal
+```
+You can then start your container like so
+
+```bash
+docker run --rm --read-only -v someTempFileImage:/tmp yourImageName
+```
+
 ## Index.html pseudo-template
 
 An overview where the env vars and HTML Fragment are injected:
@@ -148,6 +190,5 @@ Test script locally (manually for now 😬)
 
 ```bash
 # For now manually
-cd scripts/test
-../src/templateIndexHtml
+CAT_INDEX_HTML='true' RESOURCE_FOLDER='scripts/test' WEB_FOLDER='.' scripts/src/templateIndexHtml
 ```

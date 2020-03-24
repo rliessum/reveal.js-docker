@@ -2,9 +2,11 @@
 
 set -o nounset -o errexit #-o pipefail - only in bash
 
-INPUT_INDEX_HTML_TEMPLATE=${INPUT_INDEX_HTML_TEMPLATE:-'./index.html'}
-OUTPUT_INDEX_HTML=${OUTPUT_INDEX_HTML:-''}
-RESOURCE_FOLDER=${RESOURCE_FOLDER:-'.'}
+WEB_FOLDER=${WEB_FOLDER:-'/reveal/'}
+INPUT_INDEX_HTML_TEMPLATE=${INPUT_INDEX_HTML_TEMPLATE:-"${WEB_FOLDER}/index.html"}
+OUTPUT_INDEX_HTML=${OUTPUT_INDEX_HTML:-"${WEB_FOLDER}/index.html"}
+CAT_INDEX_HTML=${CAT_INDEX_HTML:-''}
+RESOURCE_FOLDER=${RESOURCE_FOLDER:-'/resources'}
 
 export TITLE=${TITLE:-'Continuous Delivery Slides'}
 export THEME_CSS=${THEME_CSS:-'css/cloudogu.css'}
@@ -42,10 +44,10 @@ TMP_FILE="$(mktemp)"
 
 envsubst < "${INPUT_INDEX_HTML_TEMPLATE}" > "${TMP_FILE}"
 
-if [ -n "${OUTPUT_INDEX_HTML}" ]; then
-    mv "${TMP_FILE}" "${OUTPUT_INDEX_HTML}"
-else 
+if [ -n "${CAT_INDEX_HTML}" ]; then
    cat "${TMP_FILE}"
+else 
+   mv "${TMP_FILE}" "${OUTPUT_INDEX_HTML}"
 fi
 
 rm -f "${TMP_FILE}"
