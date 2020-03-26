@@ -50,4 +50,7 @@ else
    mv "${TMP_FILE}" "${OUTPUT_INDEX_HTML}"
 fi
 
+# Make world readable to allow reading even when container is run with arbitrary ID
+chmod o+r "${OUTPUT_INDEX_HTML}"
+
 rm -f "${TMP_FILE}"
