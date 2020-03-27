@@ -4,20 +4,23 @@ FROM nginxinc/nginx-unprivileged:1.17.9-alpine as nginx
 
 FROM node as aggregator 
 RUN mkdir -p /tmp/reveal /dist/scripts
-COPY . /tmp/reveal
+# Install dependencies first -> More effective docker build cache
+COPY package.json package-lock.json /tmp/reveal/
 # Speed up build by removing dependencies that are large and not needed for this use case
 # qunit -> pupeteer -> chrome
 WORKDIR /tmp/reveal
 RUN sed -i '/^.*grunt-contrib-qunit.*$/d ; /^.*express.*$/d' package.json 
 RUN npm install
 
-COPY scripts/src/* /dist/scripts/
-
 # Install envsubst to be used for index.html templating in final image
 RUN apk add gettext # For envsubst -> if libaries are missing, find out with: ldd $(which envsubst)
 RUN mkdir -p /dist/usr/bin/
 RUN cp /usr/bin/envsubst /dist/usr/bin
 
+# Copy remaining web resources later for better caching
+COPY . /tmp/reveal/
+RUN mv scripts/src/* /dist/scripts/ && \
+    rm -rf scripts
 
 FROM aggregator AS dev-aggregator
 WORKDIR /tmp/reveal
