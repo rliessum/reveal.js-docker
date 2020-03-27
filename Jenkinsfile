@@ -32,8 +32,9 @@ node('docker') {
             prodImage = docker.build imageName, '.'
         }
 
-        stage('Build Images') {
-            // TODO smoke test for both images
+        stage('Test Images') {
+            smokeTest(devImage, '8000')
+            smokeTest(prodImage, '8080')
         }
 
         stage('Deploy Images') {
@@ -66,4 +67,24 @@ String createVersion(git) {
     echo "Building version ${versionName} on branch ${env.BRANCH_NAME}"
 
     return versionName
+}
+
+void smokeTest(def image, String port) {
+    String expectedTitle='myTitle'
+    Docker docker = new Docker(this)
+
+    image.withRun("-e TITLE=${expectedTitle}") { container ->
+
+        def ip = docker.findIp(container)
+        if (!ip || !getAndTestTitle("http://${ip}:${port}", expectedTitle)) {
+            echo "Container Smoke Test failed."
+            echo "Container log:"
+            echo new Sh(this).returnStdOut("docker logs ${container.id}")
+        }
+        
+    }
+}
+
+void getAndTestTitle(String url, String title) {
+    sh ("wget -O- --retry-connrefused --tries=30 -q --wait=1 ${url} | grep ${title} ")
 }
