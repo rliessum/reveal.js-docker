@@ -48,20 +48,29 @@ Ships a default presentation:
 docker run --rm -p 8080:8080 cloudogu/reveal.js
 ```
 
+Presentation is served at http://localhost:8080
+
 ## Ship your own slides
 
-See also [real-life examples](#examples) and [index.html pseudo-template](#indexhtml-pseudo-template)
-
 Just 
-* mount your markdown slides to `/reveal/docs/slides`, e.g. `-v $(pwd)/docs/slides:/reveal/docs/slides` and
-* start Container (see [bellow](#runningbuilding-containers))
+
+* mount your markdown slides to `/reveal/docs/slides`, e.g.  
+  `-v $(pwd)/docs/slides:/reveal/docs/slides` and
+* start container (see [bellow](#runningbuilding-containers))  
+  \- there is also a variant with live-reloading for 
+  efficient slide creation.
+
+See also [examples](#examples).
 
 ### Further options
+
+See [index.html pseudo-template](#indexhtml-pseudo-template) to see the effects of the options.
 
 * Mount additional folders to web server, e.g. like so:  
  `-v $(pwd)/images:/reveal/images`
 * Mount folder containing HTML fragment files ([examples](scripts/test/)) to `/resources`
-  * `slides.html` -> Pick the slides from `docs/slides` ([example](scripts/test/slides.html))
+  * `slides.html` ➡️ Customize slides from `docs/slides` ([example](scripts/test/slides.html)).  
+     Useful if you want to hide slides from printing.
   * `additional.js` - script executed before initializing reveal.js
   * `body-end.html` - `html` injected at the end of HTML `<body>`
   * `footer.html` - rendered at the footer (lower left corner) for now only works with cloudogu Themes
@@ -70,18 +79,20 @@ Just
   * `THEME_CSS`
      * `css/cloudogu.css`
      * `css/cloudogu-black.css`
+     * [reveal.js themes](https://github.com/hakimel/reveal.js/#theming)
   * `SHOW_NOTES_FOR_PRINTING` - print speaker notes - defaults to `false`.
   * `ADDITIONAL_REVEAL_OPTIONS` - [additional reveal.js options](https://github.com/hakimel/reveal.js/#configuration)
-  * `ADDITIONAL_DEPENDENCIES` - additional reveal.js dependencies, e.g. plugins  
+  * `ADDITIONAL_DEPENDENCIES` - additional reveal.js dependencies (plugins)  
      e.g. `-e ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js', async: true }" `  
-     Note that these files have to be mounted to the /reveal folder, e.g. here `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
-  * `SKIP_TEMPLATING` ignores all of the above elements and just launches with the `index.html` present. Useful if you 
-     mount your own `index.html`.
+     Note that these files have to be mounted to the /reveal folder, e.g. here  
+     `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
+  * `SKIP_TEMPLATING` ignores all of the above elements and just launches with the `index.html` present.  
+     Useful when mounting your own `index.html`.
 
 ### Running/Building containers 
 
 ```bash
-# Development mode (with live reloading)
+# Development mode (with live reloading for editing the slides)
 docker run --rm \
     -v $(pwd)/docs/slides:/reveal/docs/slides \
     -v $(pwd)/scripts/test:/resources \
@@ -118,7 +129,6 @@ COPY --from=aggregator --chown=nginx /dist /
 Or if you want to run the container with `--read-only` file system, you can do the index.html rendering at build time,
 so no files need to be written at runtime:
 
-
 ```Dockerfile
 FROM cloudogu/reveal.js:3.9.2-r6 as base
 
@@ -134,6 +144,7 @@ FROM base
 ENV SKIP_TEMPLATING='true'
 COPY --from=aggregator --chown=nginx /reveal /reveal
 ```
+
 You can then start your container like so
 
 ```bash
