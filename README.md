@@ -1,3 +1,5 @@
+![](https://cloudogu.com/assets/blog/2019/revealJS-711db5dd3e495fe26dda7ad44104542b1fceb456c11700a773a2f158bf2c8251.png)
+
 reveal.js-docker
 ===
 
@@ -5,7 +7,8 @@ reveal.js-docker
 [![](https://img.shields.io/microbadger/layers/cloudogu/reveal.js)](https://hub.docker.com/r/cloudogu/reveal.js)
 [![](https://img.shields.io/docker/image-size/cloudogu/reveal.js)](https://hub.docker.com/r/cloudogu/reveal.js)
 
-Docker images providing easier to use, opinionated reveal.js web apps - web-based slides/presentations.
+Docker images providing easier to use, opinionated reveal.js web apps - web-based slides/presentations. 
+See [example presentation](https://cloudogu.github.io/reveal.js-docker-example) for a showcase of all features.
 
 Evolution of [cloudogu/continuous-delivery-slides](https://github.com/cloudogu/continuous-delivery-slides).
 Allows for 
@@ -173,6 +176,10 @@ An overview where the env vars and HTML Fragment are injected:
 ```
 
 ## Examples
+
+* [cloudogu/reveal.js-docker-example](https://github.com/cloudogu/reveal.js-docker-example)
+
+Real Life:
 
 * [cloudogu/k8s-appops-security-talks](https://github.com/cloudogu/k8s-appops-security-talks)
 
