@@ -23,10 +23,14 @@ Allows for
 - [How to use](#how-to-use)
   - [Simplest start](#simplest-start)
   - [Ship your own slides](#ship-your-own-slides)
+    - [Further options](#further-options)
+    - [Running/Building containers](#runningbuilding-containers)
   - [Index.html pseudo-template](#indexhtml-pseudo-template)
   - [Examples](#examples)
 - [Development](#development)
   - [Tests](#tests)
+  - [Docker Image](#docker-image)
+  - [Script templateIndexHtml](#script-templateindexhtml)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -45,9 +49,14 @@ docker run --rm -p 8080:8080 cloudogu/reveal.js
 
 See also [real-life examples](#examples) and [index.html pseudo-template](#indexhtml-pseudo-template)
 
-* Mount markdown slides to `/docs/slides`
-* Optionally mount additional folders to web server, e.g. like so:  
- `-v  $(pwd)/images:/reveal/images`
+Just 
+* mount your markdown slides to `/reveal/docs/slides`, e.g. `-v $(pwd)/docs/slides:/reveal/docs/slides` and
+* start Container (see [bellow](#runningbuilding-containers))
+
+### Further options
+
+* Mount additional folders to web server, e.g. like so:  
+ `-v $(pwd)/images:/reveal/images`
 * Mount folder containing HTML fragment files ([examples](scripts/test/)) to `/resources`
   * `slides.html` -> Pick the slides from `docs/slides` ([example](scripts/test/slides.html))
   * `additional.js` - script executed before initializing reveal.js
@@ -65,7 +74,8 @@ See also [real-life examples](#examples) and [index.html pseudo-template](#index
      Note that these files have to be mounted to the /reveal folder, e.g. here `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
   * `SKIP_TEMPLATING` ignores all of the above elements and just launches with the `index.html` present. Useful if you 
      mount your own `index.html`.
-* Start Container
+
+### Running/Building containers 
 
 ```bash
 # Development mode (with live reloading)
@@ -88,7 +98,7 @@ docker run --rm \
 You can also build your own productive image:
 
 ```Dockerfile
-FROM cloudogu/reveal.js:3.9.2-r5 as base
+FROM cloudogu/reveal.js:3.9.2-r6 as base
 
 FROM base as aggregator
 USER root
@@ -107,7 +117,7 @@ so no files need to be written at runtime:
 
 
 ```Dockerfile
-FROM cloudogu/reveal.js:3.9.2-r3 as base
+FROM cloudogu/reveal.js:3.9.2-r6 as base
 
 FROM base as aggregator
 ENV TITLE='myTitle' \
@@ -124,7 +134,7 @@ COPY --from=aggregator --chown=nginx /reveal /reveal
 You can then start your container like so
 
 ```bash
-docker run --rm --read-only -v someTempFileImage:/tmp yourImageName
+docker run --rm -u 1000000:1000000 --read-only -v someTempFileImage:/tmp yourImageName
 ```
 
 ## Index.html pseudo-template
@@ -164,7 +174,7 @@ An overview where the env vars and HTML Fragment are injected:
 
 ## Examples
 
-* [cloudogu/k8s-security-3-things](https://github.com/cloudogu/k8s-security-3-things)
+* [cloudogu/k8s-appops-security-talks](https://github.com/cloudogu/k8s-appops-security-talks)
 
 # Development
 
@@ -176,7 +186,7 @@ docker build -t dev --build-arg ENV=dev .
 ```
 
 Note: If only one build is required, buildkit would be more efficient. However, prod is failing with buildkit.
-Try it with `export DOCKER_BUILDKIT` See [this issue](https://github.com/moby/moby/issues/735=
+Try it with `export DOCKER_BUILDKIT` See [this issue](https://github.com/moby/moby/issues/735)
 
 ## Tests
 

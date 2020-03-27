@@ -2,11 +2,12 @@
 
 set -o nounset -o errexit #-o pipefail - only in bash
 
-WEB_FOLDER=${WEB_FOLDER:-'/reveal/'}
-INPUT_INDEX_HTML_TEMPLATE=${INPUT_INDEX_HTML_TEMPLATE:-"${WEB_FOLDER}/index.html"}
-OUTPUT_INDEX_HTML=${OUTPUT_INDEX_HTML:-"${WEB_FOLDER}/index.html"}
-CAT_INDEX_HTML=${CAT_INDEX_HTML:-''}
-RESOURCE_FOLDER=${RESOURCE_FOLDER:-'/resources'}
+WEB_FOLDER="${WEB_FOLDER:-"/reveal"}"
+INPUT_INDEX_HTML_TEMPLATE="${INPUT_INDEX_HTML_TEMPLATE:-"${WEB_FOLDER}/index.html"}"
+OUTPUT_INDEX_HTML="${OUTPUT_INDEX_HTML:-"${WEB_FOLDER}/index.html"}"
+CAT_INDEX_HTML="${CAT_INDEX_HTML:-""}"
+RESOURCE_FOLDER="${RESOURCE_FOLDER:-"/resources"}"
+SLIDES_FOLDER="docs/slides"
 
 export TITLE=${TITLE:-'Continuous Delivery Slides'}
 export THEME_CSS=${THEME_CSS:-'css/cloudogu.css'}
@@ -29,9 +30,15 @@ fi
 if [ -f "${RESOURCE_FOLDER}/slides.html" ]; then
     export SLIDES_HTML="$(cat "${RESOURCE_FOLDER}/slides.html")"
 else
-    # TODO parse all .md files from docs/slides 
-    echo "WARNING: No slides.html found in ${RESOURCE_FOLDER}. Using default presentation."
-    export SLIDES_HTML="$(cat "${ABSOLUTE_BASEDIR}/default-slides.html")"
+    echo "No slides.html found in ${RESOURCE_FOLDER}. Serving all files from ${SLIDES_FOLDER} as markdown:"
+    find "${WEB_FOLDER}/${SLIDES_FOLDER}" -type f -exec basename '{}' \;  | sort
+    
+    export SLIDES_HTML="$(cd "${WEB_FOLDER}" && \
+                          find "${SLIDES_FOLDER}" -type f -print0 | \
+                          sort -z | \
+                          xargs -r0 -I '{}' \
+                            echo  "<section data-markdown=\"{}\" data-separator-vertical=\"^\r?\n\r?\n\r?\n\"></section>" \
+                         )"
 fi
 
 if [ -f "${RESOURCE_FOLDER}/additional.js" ]; then
