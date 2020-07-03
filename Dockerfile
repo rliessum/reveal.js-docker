@@ -9,7 +9,7 @@ COPY package.json package-lock.json /tmp/reveal/
 # Speed up build by removing dependencies that are large and not needed for this use case
 # qunit -> pupeteer -> chrome
 WORKDIR /tmp/reveal
-RUN sed -i '/^.*grunt-contrib-qunit.*$/d ; /^.*express.*$/d' package.json 
+RUN sed -i '/^.*node-qunit-puppeteer.*$/d' package.json
 RUN npm install
 
 # Install envsubst to be used for index.html templating in final image
@@ -21,11 +21,13 @@ RUN cp /usr/bin/envsubst /dist/usr/bin
 COPY . /tmp/reveal/
 RUN mv scripts/src/* /dist/scripts/ && \
     rm -rf scripts
+# Remove qunite dependency (see above)
+RUN sed -i '/^const qunit.*$/d' gulpfile.js
 
 FROM aggregator AS dev-aggregator
 WORKDIR /tmp/reveal
 # Build minified js, css, copy plugins, etc. 
-RUN node_modules/grunt/bin/grunt --skipTests
+RUN node_modules/gulp/bin/gulp.js build
 RUN mv /tmp/reveal /dist/reveal
 # For some reasons libintl is only needed by envsubst in dev
 RUN mkdir -p /dist/lib/ 
@@ -42,9 +44,8 @@ FROM aggregator AS prod-aggregator
 WORKDIR /tmp/reveal
 RUN mkdir -p /dist/usr/share/nginx/ /dist/reveal/
 # Package only whats necessary for static website 
-RUN node_modules/grunt/bin/grunt package --skipTests
+RUN node_modules/gulp/bin/gulp.js package
 RUN unzip reveal-js-presentation.zip -d /dist/reveal/
-RUN rm /dist/reveal/js/reveal.js # We only need the minimized version
 # Serve web content at same folder in dev and prod: /reveal. This does not work with buildkit.
 RUN ln -s /reveal /dist/usr/share/nginx/html
 

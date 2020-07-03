@@ -82,9 +82,10 @@ See [index.html pseudo-template](#indexhtml-pseudo-template) to see the effects 
      * [reveal.js themes](https://github.com/hakimel/reveal.js/#theming)
   * `SHOW_NOTES_FOR_PRINTING` - print speaker notes - defaults to `false`.
   * `ADDITIONAL_REVEAL_OPTIONS` - [additional reveal.js options](https://github.com/hakimel/reveal.js/#configuration)
-  * `ADDITIONAL_DEPENDENCIES` - additional reveal.js dependencies (plugins)  
-     e.g. `-e ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js', async: true }" `  
-     Note that these files have to be mounted to the /reveal folder, e.g. here  
+  * `ADDITIONAL_PLUGINS` - additional reveal.js plugins.
+     * e.g. `-e ADDITIONAL_PLUGINS="RevealMath" `
+     * Add the plugin script using `ADDITIONAL_SCRIPT`, e.g. `-e ADDITIONAL_SCRIPT='<script src="plugin/math/math.js"></script>'`  
+     * External plugins have to be mounted or copied to the `/reveal` folder, e.g. here  
      `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
   * `SKIP_TEMPLATING` ignores all of the above elements and just launches with the `index.html` present.  
      Useful when mounting your own `index.html`.
@@ -96,7 +97,7 @@ See [index.html pseudo-template](#indexhtml-pseudo-template) to see the effects 
 docker run --rm \
     -v $(pwd)/docs/slides:/reveal/docs/slides \
     -v $(pwd)/scripts/test:/resources \
-    -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
+    -e TITLE='my Title' -e THEME_CSS='cloudogu-black.css' \
     -p 8000:8000 -p 35729:35729 \
     cloudogu/reveal.js:dev
 
@@ -104,7 +105,7 @@ docker run --rm \
 docker run --rm \
     -v $(pwd)/docs/slides:/reveal/docs/slides \
     -v $(pwd)/scripts/test:/resources \
-    -e TITLE='my Title' -e THEME_CSS='css/cloudogu-black.css' \
+    -e TITLE='my Title' -e THEME_CSS='cloudogu-black.css' \
     -p 8080:8080 \
     cloudogu/reveal.js
 ```
@@ -122,7 +123,7 @@ RUN mv /dist/reveal/resources/ /dist
 
 FROM base
 ENV TITLE='my Title' \
-    THEME_CSS='css/cloudogu-black.css'
+    THEME_CSS='cloudogu-black.css'
 COPY --from=aggregator --chown=nginx /dist /
 ```
 
@@ -134,7 +135,7 @@ FROM cloudogu/reveal.js:3.9.2-r6 as base
 
 FROM base as aggregator
 ENV TITLE='myTitle' \
-    THEME_CSS='css/cloudogu-black.css'
+    THEME_CSS='cloudogu-black.css'
 USER root
 COPY . /reveal
 RUN mv /reveal/resources/ /
@@ -153,38 +154,7 @@ docker run --rm -u 1000000:1000000 --read-only -v someTempFileImage:/tmp yourIma
 
 ## Index.html pseudo-template
 
-An overview where the env vars and HTML Fragment are injected:
-
-```html
-<!doctype html>
-<html>
-<head>
-    <title>${TITLE}</title>
-    
-    <link rel="stylesheet" href="${THEME_CSS-css/cloudogu.css}">
-</head>
-<body>
-    <div class="reveal">
-        <!-- optional: footer.html -->
-        <div class="slides">
-        <!-- slides.html-->
-        </div>
-    </div>
-    const showNotesForPrinting = ${SHOW_NOTES_FOR_PRINTING};
-    <!-- Optional: <script>additional.js</script>-  -->
-    <script>
-    // ... Initializes reveal.js
-        dependencies: [
-                         // ...,
-                         ${ADDITIONAL_DEPENDENCIES}
-                       ]
-        ${ADDITIONAL_REVEAL_OPTIONS}
-    </script>
-    
-    <!-- optional: body-end.html -->
-</body>
-</html>
-```
+See [index.html](index.html)
 
 ## Examples
 

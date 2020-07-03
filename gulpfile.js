@@ -241,22 +241,30 @@ gulp.task('eslint', () => gulp.src(['./js/**', 'gulpfile.js'])
 
 gulp.task('test', gulp.series( 'eslint', 'qunit' ))
 
-gulp.task('default', gulp.series(gulp.parallel('js', 'css', 'plugins'), 'test'))
+gulp.task('fontawesome', () =>
+    gulp.src(['./node_modules/@fortawesome/**']).pipe(gulp.dest('./lib/')));
 
-gulp.task('build', gulp.parallel('js', 'css', 'plugins'))
+gulp.task('twemoji',() =>
+    gulp.src(['./node_modules/twemoji/dist/**']).pipe(gulp.dest('./lib/twemoji')));
 
-gulp.task('package', gulp.series('default', () =>
+gulp.task('build', gulp.parallel('js', 'css', 'plugins', 'fontawesome', 'twemoji'))
 
-    gulp.src([
-        './index.html',
-        './dist/**',
-        './lib/**',
-        './images/**',
-        './plugin/**',
-        './**.md'
-    ]).pipe(zip('reveal-js-presentation.zip')).pipe(gulp.dest('./'))
+gulp.task('package', gulp.series('build', () =>
 
-))
+        gulp.src([
+            './index.html',
+            './dist/**',
+            './lib/**',
+            './images/**',
+            './plugin/**',
+            './docs/slides/**.md',
+            './favicon.ico'
+        ], { base: './' }) /* keep folder structure */
+            .pipe(zip('reveal-js-presentation.zip')).pipe(gulp.dest('./'))
+    )
+)
+
+gulp.task('default', gulp.series('build', 'test'))
 
 gulp.task('reload', () => gulp.src(['*.html', '*.md'])
     .pipe(connect.reload()));
@@ -270,7 +278,7 @@ gulp.task('serve', () => {
         livereload: true
     })
 
-    gulp.watch(['*.html', '*.md'], gulp.series('reload'))
+    gulp.watch(['*.html', '**/**            .md'], gulp.series('reload'))
 
     gulp.watch(['js/**'], gulp.series('js', 'reload', 'test'))
 

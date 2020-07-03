@@ -115,6 +115,12 @@ html.print-pdf {
 		z-index: auto !important;
 	}
 
+	.reveal .slide-background-content {
+		background-position: bottom;
+		background-size: contain;
+		background-repeat: no-repeat;
+	}
+	
 	/* Display slide speaker notes when 'showNotes' is enabled */
 	.reveal.show-notes {
 		max-width: none;

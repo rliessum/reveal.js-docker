@@ -9,9 +9,9 @@ CAT_INDEX_HTML="${CAT_INDEX_HTML:-""}"
 RESOURCE_FOLDER="${RESOURCE_FOLDER:-"/resources"}"
 SLIDES_FOLDER="docs/slides"
 
-export TITLE=${TITLE:-'Continuous Delivery Slides'}
-export THEME_CSS=${THEME_CSS:-'css/cloudogu.css'}
-export ADDITIONAL_DEPENDENCIES=${ADDITIONAL_DEPENDENCIES:-''}
+export TITLE=${TITLE:-'cloudogu/reveal.js-docker'}
+export THEME_CSS=${THEME_CSS:-'cloudogu.css'}
+export ADDITIONAL_PLUGINS=${ADDITIONAL_PLUGINS:-''}
 export ADDITIONAL_REVEAL_OPTIONS=${ADDITIONAL_REVEAL_OPTIONS:-''}
 export SHOW_NOTES_FOR_PRINTING=${SHOW_NOTES_FOR_PRINTING:-'false'}
 

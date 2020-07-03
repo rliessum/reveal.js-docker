@@ -4,11 +4,12 @@
 !css/**
 !scripts/src
 !docs/**
+!dist/**
 !js/**
 !lib/**
 !plugin/**
 !favicon.ico
-!gruntfile.js
+!gulpfile.js
 !index.html
 !package.json
 !package-lock.json
