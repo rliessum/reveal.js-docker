@@ -52,7 +52,9 @@ Presentation is served at http://localhost:8080
 
 ## Ship your own slides
 
-Just 
+Have a look at the [reveal.js-docker-example](https://github.com/cloudogu/reveal.js-docker-example).
+
+In a nutshell, just 
 
 * mount your markdown slides to `/reveal/docs/slides`, e.g.  
   `-v $(pwd)/docs/slides:/reveal/docs/slides` and
@@ -62,7 +64,7 @@ Just
 
 See also [examples](#examples).
 
-### Further options
+### More options
 
 See [index.html pseudo-template](#indexhtml-pseudo-template) to see the effects of the options.
 
@@ -113,7 +115,7 @@ docker run --rm \
 You can also build your own productive image:
 
 ```Dockerfile
-FROM cloudogu/reveal.js:3.9.2-r6 as base
+FROM cloudogu/reveal.js:4.0.2-r3 as base
 
 FROM base as aggregator
 USER root
@@ -131,7 +133,7 @@ Or if you want to run the container with `--read-only` file system, you can do t
 so no files need to be written at runtime:
 
 ```Dockerfile
-FROM cloudogu/reveal.js:3.9.2-r6 as base
+FROM cloudogu/reveal.js:4.0.2-r3 as base
 
 FROM base as aggregator
 ENV TITLE='myTitle' \
@@ -163,6 +165,7 @@ See [index.html](index.html)
 Real Life:
 
 * [cloudogu/k8s-appops-security-talks](https://github.com/cloudogu/k8s-appops-security-talks)
+* [cloudogu/k8s-intro-talk](https://github.com/cloudogu/k8s-intro-talk)
 
 # Development
 
