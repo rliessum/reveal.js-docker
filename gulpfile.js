@@ -295,7 +295,9 @@ gulp.task('serve', () => {
     ], gulp.series('css-themes', 'reload'))
 
     gulp.watch([
-        'css/*.scss',
+        /* TODO migrate themes to scss*/
+        'css/cloudogu*.css',
+        'dist/theme/*.css',
         'css/print/*.{sass,scss,css}'
     ], gulp.series('css-core', 'reload'))
 
