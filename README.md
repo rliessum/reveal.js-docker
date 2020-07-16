@@ -94,6 +94,9 @@ See [index.html pseudo-template](#indexhtml-pseudo-template) to see the effects 
 
 ### Running/Building containers 
 
+Note that [reveal.js-docker-example](https://github.com/cloudogu/reveal.js-docker-example) also contains a convenient
+ startup script.
+
 ```bash
 # Development mode (with live reloading for editing the slides)
 docker run --rm \
