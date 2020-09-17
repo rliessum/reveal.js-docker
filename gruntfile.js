@@ -146,7 +146,7 @@ module.exports = grunt => {
 					'lib/**',
 					'images/**',
 					'plugin/**',
-					'docs/slides/**.md',
+					'docs/slides/**/**.md',
                     'favicon.ico'
 				],
 				dest: 'reveal-js-presentation.zip'
@@ -180,7 +180,7 @@ module.exports = grunt => {
 			},
 			markdown: {
 				files: [
-					'docs/slides/**.md',
+					'docs/slides/**/**.md',
 				]
 			},
 			options: {
