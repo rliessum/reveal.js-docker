@@ -79,8 +79,8 @@ See [index.html pseudo-template](#indexhtml-pseudo-template) to see the effects 
 * Optional Env vars: 
   * `TITLE`
   * `THEME_CSS`
-     * `css/cloudogu.css`
-     * `css/cloudogu-black.css`
+     * `cloudogu.css`
+     * `cloudogu-black.css`
      * [reveal.js themes](https://github.com/hakimel/reveal.js/#theming)
   * `SHOW_NOTES_FOR_PRINTING` - print speaker notes - defaults to `false`.
   * `ADDITIONAL_REVEAL_OPTIONS` - [additional reveal.js options](https://github.com/hakimel/reveal.js/#configuration)
