@@ -367,3 +367,11 @@ html.print-pdf .printOnly {
   bottom: 1em;
   left: 1em;
 }
+
+.container {
+  display: flex;
+}
+
+.column {
+  flex: 1;
+}
