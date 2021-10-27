@@ -75,17 +75,18 @@ See [index.html pseudo-template](#indexhtml-pseudo-template) to see the effects 
   * `additional.js` - script executed before initializing reveal.js
   * `body-end.html` - `html` injected at the end of HTML `<body>`
   * `footer.html` - rendered at the footer (lower left corner) for now only works with cloudogu Themes
-* Optional Env vars: 
-  * `TITLE`
+* Optional Env vars: *Note: Make sure to use single quotes*, otherwise parsing in `startPresentation.sh` from [example](https://github.com/cloudogu/reveal.js-docker-example) will fail
+  * `TITLE='my title'`
   * `THEME_CSS`
      * `cloudogu.css`
      * `cloudogu-black.css`
      * [reveal.js themes](https://github.com/hakimel/reveal.js/#theming)
   * `SHOW_NOTES_FOR_PRINTING` - print speaker notes - defaults to `false`.
-  * `ADDITIONAL_REVEAL_OPTIONS` - [additional reveal.js options](https://github.com/hakimel/reveal.js/#configuration)
+  * `ADDITIONAL_REVEAL_OPTIONS` - [additional reveal.js options](https://revealjs.com/config/)
   * `ADDITIONAL_PLUGINS` - additional reveal.js plugins.
      * e.g. `-e ADDITIONAL_PLUGINS="RevealMath" `
      * Add the plugin script using `ADDITIONAL_SCRIPT`, e.g. `-e ADDITIONAL_SCRIPT='<script src="plugin/math/math.js"></script>'`  
+     * TODO legacy plugins
      * External plugins have to be mounted or copied to the `/reveal` folder, e.g. here  
      `-v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud`
   * `SKIP_TEMPLATING` ignores all of the above elements and just launches with the `index.html` present.  
@@ -174,8 +175,8 @@ Real Life:
 Build Docker Images, from repo root
 
 ```bash
-docker build -t prod .
-docker build -t dev --build-arg ENV=dev .
+docker build -t cloudogu/reveal.js:local .
+docker build -t cloudogu/reveal.js:local-dev --build-arg ENV=dev .
 ```
 
 Note: If only one build is required, buildkit would be more efficient. However, prod is failing with buildkit.
