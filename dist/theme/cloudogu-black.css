@@ -246,9 +246,6 @@ li::before {content: "•"; color:#23A3DD;
 .reveal small * {
   vertical-align: top; }
 
-.reveal img {
-  margin: 20px 0; }
-
 /*********************************************
  * LINKS
  *********************************************/
